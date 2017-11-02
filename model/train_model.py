@@ -67,6 +67,7 @@ def load_data():
 
 
 # Return a rnn+cnn model instance
+# Source: http://www.jianshu.com/p/25655870b458
 def create_model(image_shape, max_caption_len, vocab_size):
     model = Sequential()
     model.add(Conv2D(32, (3,3), input_shape=image_shape, kernel_initializer='he_normal', kernel_regularizer=l2(0.001)))

@@ -4,8 +4,8 @@ import random
 from io import BytesIO
 
 # Own function
-from train_model import create_model,IMAGE_SHAPE,MAX_CHAR_NUM,NUM_CHAR_CLASS, make_predictions
-from gen_captcha import gen_captcha_image
+from model.train_model import create_model,IMAGE_SHAPE,MAX_CHAR_NUM,NUM_CHAR_CLASS, make_predictions
+from model.gen_captcha import gen_captcha_image
 
 # External Lib
 from flask import Flask, render_template, request, url_for, jsonify

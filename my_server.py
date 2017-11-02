@@ -51,7 +51,7 @@ def generate_random_word():
 
 @app.route('/generate_and_predict', methods=['GET'])
 def generate_and_predict():
-	word = generate_random_word()
+    word = generate_random_word()
     image = gen_captcha_image(imageCaptcha, word)
     # Make predictions	
     prediction = make_predictions(model, PIL2array(image))[0]

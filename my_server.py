@@ -22,7 +22,7 @@ model.load_weights('static/weights.384-0.12.hdf5')
 
 imageCaptcha = ImageCaptcha(width=200, height=80)
 
-words = list(filter(lambda x: len(x)>=4 and len(x)<=6, brown.words(categories=['humor'])))
+words = list(filter(lambda x: len(x)>=4 and len(x)<=6, brown.words(categories=['humor'])))[:1000]
 
 if __name__ == '__main__':
     app.run(debug=True)

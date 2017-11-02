@@ -26,7 +26,7 @@ words = list(filter(lambda x: len(x)>=4 and len(x)<=6, brown.words(categories=['
 
 if __name__ == '__main__':
     app.run(debug=True)
-
+	
 # Source: http://code.activestate.com/recipes/577591-conversion-of-pil-image-and-numpy-array/
 # With some modifications to fit into the model
 def PIL2array(img):

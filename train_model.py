@@ -10,7 +10,6 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten, LeakyReLU
 from keras.layers import BatchNormalization, RepeatVector
 from keras.layers import Conv2D, MaxPooling2D, TimeDistributed
-from seq2seq.models import Seq2Seq
 from keras.regularizers import l2
 from keras.optimizers import SGD
 from keras.callbacks import TensorBoard, ModelCheckpoint
@@ -67,6 +66,7 @@ def load_data():
 
 # Return a rnn+cnn model instance
 def create_model(image_shape, max_caption_len, vocab_size):
+    from seq2seq.models import Seq2Seq
     model = Sequential()
     model.add(Conv2D(32, (3,3), input_shape=image_shape, kernel_initializer='he_normal', kernel_regularizer=l2(0.001)))
     model.add(LeakyReLU())

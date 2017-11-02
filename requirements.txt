@@ -25,6 +25,7 @@ mccabe==0.6.1
 nltk==3.2.5
 numpy==1.13.3
 olefile==0.44
+opencv-python==3.3.0
 pandas==0.20.3
 parso==0.1.0
 pew==1.1.0

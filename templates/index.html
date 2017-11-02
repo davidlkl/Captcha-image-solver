@@ -1,8 +1,24 @@
 <!doctype html>
-<title>Upload new File</title>
-<h1>Upload new File</h1>
-<form method=post enctype=multipart/form-data>
- <input type=submit value=Generate>
-</form>
-<img src="data:image/png;base64,{{ result }}"></img>
-{{prediction}}
+<title>Webapge for testing the captcha solver</title>
+<h1>Generate a random English word captcha image:</h1>
+<script src="../static/jquery-3.2.1.min.js"></script>
+<script>
+$("body").on('click','#btnGenerate',function(){
+	$this =$(this);
+	$this.prop('disabled',true);
+	$.getJSON('/generate_and_predict', {
+			}, function(data) {
+		   $('.subtitle').show();
+		   document.getElementById("captcha").src = data.image_url;
+		   document.getElementById("prediction").innerHTML = data.prediction;
+		   $this.prop('disabled',false);	
+		  });
+});
+</script>
+<button id="btnGenerate">Click to generate</button>
+<br>
+<span class="subtitle" style="display:none"><h3>Image:</h3></span><br>
+<img id="captcha" />
+<br>
+<span class="subtitle" style="display:none"><h3>Prediction:</h3></span> <br>
+<span id="prediction"></span>

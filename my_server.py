@@ -8,7 +8,7 @@ from train_model import create_model,IMAGE_SHAPE,MAX_CHAR_NUM,NUM_CHAR_CLASS, ma
 from gen_captcha import gen_captcha_image
 
 # External Lib
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, jsonify
 from captcha.image import ImageCaptcha
 from PIL import Image
 from nltk.corpus import brown
@@ -46,20 +46,30 @@ def get_image_bytes(image):
 def generate_random_word():
     return random.choice(words)
 
+@app.route('/generate_and_predict', methods=['GET'])
+def generate_and_predict():
+    image = gen_captcha_image(imageCaptcha,generate_random_word())
+    # Make predictions	
+    prediction = make_predictions(model, PIL2array(image))[0]
+    # Get image bytes data for rendering
+    figdata_png = get_image_bytes(image)
+    # Embedding image content to its url
+    image_url = "data:image/png;base64," + figdata_png
+    
+    return jsonify({'image_url' : image_url, 'prediction' : prediction})
+	
 @app.route('/', methods=['GET','POST'])
 def index_page():
     if request.method == 'GET':
-        image = gen_captcha_image(imageCaptcha,'apple')
-        # Make predictions    
-        prediction = make_predictions(model, PIL2array(image))[0]
-        # Get image bytes data for rendering
-        figdata_png = get_image_bytes(image)
-
+        image = gen_captcha_image(imageCaptcha,'Start')
     elif request.method == 'POST':
         image = gen_captcha_image(imageCaptcha,generate_random_word())
-        # Make predictions    
-        prediction = make_predictions(model, PIL2array(image))[0]
-        # Get image bytes data for rendering
-        figdata_png = get_image_bytes(image)
-	
+		
+    # Make predictions    
+    prediction = make_predictions(model, PIL2array(image))[0]
+    # Get image bytes data for rendering
+    figdata_png = get_image_bytes(image)
+    # Embedding image content to its url
+    image_url = "data:image/png;base64," + figdata_png
+    
     return render_template('index.html', result=figdata_png, prediction=prediction)

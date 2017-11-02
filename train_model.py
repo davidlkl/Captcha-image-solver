@@ -3,7 +3,6 @@ import os
 import string
 
 # External Lib
-import cv2
 import numpy as np
 import pandas as pd
 from keras.utils.np_utils import to_categorical
@@ -47,6 +46,7 @@ def make_predictions(model, X_test):
 # Load image data from directory
 # Return image and label arrays
 def load_data():
+	import cv2
     images, labels = [], []
 
     for (dirpath, dirnames, filenames) in os.walk(TRAIN_DIR):

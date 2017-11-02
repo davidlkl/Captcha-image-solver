@@ -61,5 +61,5 @@ def index_page():
         prediction = make_predictions(model, PIL2array(image))[0]
         # Get image bytes data for rendering
         figdata_png = get_image_bytes(image)
-
-    return render_template('index.html', result=figdata_png, prediction=prediction)
+	
+    return render_template('templates/index.html', result=figdata_png, prediction=prediction)

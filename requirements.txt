@@ -39,6 +39,7 @@ pyflakes==1.6.0
 Pygments==2.2.0
 pyparsing==2.2.0
 python-dateutil==2.6.1
+pytz==2014.7
 PyYAML==3.12
 gunicorn==19.7.1
 requests==2.18.4

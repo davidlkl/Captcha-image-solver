@@ -11,6 +11,7 @@ $("body").on('click','#btnGenerate',function(){
 		   $('.subtitle').show();
 		   document.getElementById("captcha").src = data.image_url;
 		   document.getElementById("prediction").innerHTML = data.prediction;
+		   document.getElementById("target").innerHTML = data.target;
 		   $this.prop('disabled',false);	
 		  });
 });
@@ -22,3 +23,6 @@ $("body").on('click','#btnGenerate',function(){
 <br>
 <span class="subtitle" style="display:none"><h3>Prediction:</h3></span> <br>
 <span id="prediction"></span>
+<br>
+<span class="subtitle" style="display:none"><h3>Target:</h3></span> <br>
+<span id="target"></span>

@@ -7,6 +7,7 @@ from captcha.image import ImageCaptcha
 from PIL import Image
 
 # Global Variable
+# Built-in English word dictionary in Ubuntu
 DICTIONARY_FILE = '/usr/share/dict/words'
 TRAIN_DIR = 'train'
 
@@ -39,6 +40,7 @@ def gen_captcha_image(imageCaptcha, text):
     captcha_image = Image.open(captcha)
     return captcha_image
 
+# Avoid creating ImageCaptcha instance repeatedly
 def gen_captcha_images(words):
     imageCaptcha = ImageCaptcha(width=200, height=80)
     for word in words:

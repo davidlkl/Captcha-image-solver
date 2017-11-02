@@ -17,11 +17,14 @@ import numpy as np
 
 app = Flask(__name__)
 
+# Load trained model
 model = create_model(IMAGE_SHAPE, MAX_CHAR_NUM, NUM_CHAR_CLASS)
 model.load_weights('static/weights.384-0.12.hdf5')
 
+# Instantiate image captcha generator
 imageCaptcha = ImageCaptcha(width=200, height=80)
 
+# Pick first 1000 words with length 4-6 from corpus brown
 words = list(filter(lambda x: len(x)>=4 and len(x)<=6, brown.words(categories=['humor'])))[:1000]
 
 if __name__ == '__main__':
@@ -48,28 +51,17 @@ def generate_random_word():
 
 @app.route('/generate_and_predict', methods=['GET'])
 def generate_and_predict():
-    image = gen_captcha_image(imageCaptcha,generate_random_word())
+	word = generate_random_word()
+    image = gen_captcha_image(imageCaptcha, word)
     # Make predictions	
     prediction = make_predictions(model, PIL2array(image))[0]
     # Get image bytes data for rendering
     figdata_png = get_image_bytes(image)
     # Embedding image content to its url
     image_url = "data:image/png;base64," + figdata_png
-    
-    return jsonify({'image_url' : image_url, 'prediction' : prediction})
+    # Return json with image, target, prediction
+    return jsonify({'image_url' : image_url, 'target': word, 'prediction' : prediction})
 	
-@app.route('/', methods=['GET','POST'])
+@app.route('/', methods=['GET'])
 def index_page():
-    if request.method == 'GET':
-        image = gen_captcha_image(imageCaptcha,'Start')
-    elif request.method == 'POST':
-        image = gen_captcha_image(imageCaptcha,generate_random_word())
-		
-    # Make predictions    
-    prediction = make_predictions(model, PIL2array(image))[0]
-    # Get image bytes data for rendering
-    figdata_png = get_image_bytes(image)
-    # Embedding image content to its url
-    image_url = "data:image/png;base64," + figdata_png
-    
-    return render_template('index.html', result=figdata_png, prediction=prediction)
+    return render_template('index.html')

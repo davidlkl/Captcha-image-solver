@@ -13,6 +13,7 @@ from keras.layers import Conv2D, MaxPooling2D, TimeDistributed
 from keras.regularizers import l2
 from keras.optimizers import SGD
 from keras.callbacks import TensorBoard, ModelCheckpoint
+from seq2seq.models import Seq2Seq
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -45,6 +46,7 @@ def make_predictions(model, X_test):
 # Load image data from directory
 # Return image and label arrays
 def load_data():
+	# Avoid error from Heroku during importing opencv
     import cv2
     images, labels = [], []
     for (dirpath, dirnames, filenames) in os.walk(TRAIN_DIR):
@@ -66,7 +68,6 @@ def load_data():
 
 # Return a rnn+cnn model instance
 def create_model(image_shape, max_caption_len, vocab_size):
-    from seq2seq.models import Seq2Seq
     model = Sequential()
     model.add(Conv2D(32, (3,3), input_shape=image_shape, kernel_initializer='he_normal', kernel_regularizer=l2(0.001)))
     model.add(LeakyReLU())
@@ -129,20 +130,3 @@ def train():
 				verbose=2,
 				shuffle=True,
 				callbacks=[tensorboard, modelcheckpoint])
-
-
-	predictions = model.predict(X_test)
-	results = []
-	targets = []
-	for prediction in predictions:
-		results.append(
-		"".join(LABEL_ENCODER.inverse_transform([x.argmax() for x in prediction])).replace(" ","")
-		)
-	for target in Y_test:
-		targets.append(
-		"".join(LABEL_ENCODER.inverse_transform([x.argmax() for x in target])).replace(" ","")
-		)
-	import pandas as pd
-	df = pd.DataFrame([results,targets]).T
-	df.to_csv('results.csv')
-

@@ -48,8 +48,8 @@ The front-end is a simple webpage with a single button to generate random captch
 
 ### Setting up the local server
 ##### Install the libraries:
-`pip3 install -r _requirements.txt`<br>
-A leading underscore '_' is added to the standard name 'requirements.txt' as it is reserved for Heroku setup.
+`pip3 install -r requirements.txt`<br>
+
 
 ##### Set environment variable FLASK_APP:
 `export FLASK_APP=my_server.py`
@@ -62,4 +62,6 @@ A local server will be run on localhost:5000.
 This repository is pushed to Heroku, a free web hosting website. <br>
 Link: https://davidlkl-captcha-solver.herokuapp.com/<br>
 Please note that the server may be down for serveral hours per day becuase of the free plan.
+##### Relevant files:
+Some configuaration files are needed to setup Heroku. They are Procfile, nltk.txt, requirements.txt and runtime.txt.
 

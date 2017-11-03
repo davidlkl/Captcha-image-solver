@@ -45,7 +45,7 @@ def gen_captcha_images(words):
     imageCaptcha = ImageCaptcha(width=200, height=80)
     for word in words:
         captcha_image = gen_captcha_image(imageCaptcha, word)
-		captcha_image.save(os.path.join(TRAIN_DIR, word + '.png'))
+        captcha_image.save(os.path.join(TRAIN_DIR, word + '.png'))
     return
 
 def main():

@@ -24,7 +24,7 @@ Words with 4-6 character length are selected from the built-in english word dict
 The code is saved as gen_captcha.py in folder("model").
 
 ### Model Training
-Keras + Tensorflow-gpu are used for training the model.
+Keras + Tensorflow-gpu are used for training the model.<br>
 The chaptcha image dataset is split into 3 parts (train, validation, testing) in the ratio of 0.68: 0.17: 0.15.
 
 ##### Model Architecture:
@@ -59,4 +59,7 @@ A leading underscore '_' is added to the standard name 'requirements.txt' as it 
 A local server will be run on localhost:5000.
 
 ### Heroku - a free web hosting website
-This repository is pushed to Heroku, a free web hosting website.
+This repository is pushed to Heroku, a free web hosting website. <br>
+Link: https://davidlkl-captcha-solver.herokuapp.com/<br>
+Please note that the server may be down for serveral hours per day becuase of the free plan.
+

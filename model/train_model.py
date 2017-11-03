@@ -18,6 +18,13 @@ from seq2seq.models import Seq2Seq
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 
+# Avoid error from Heroku during importing opencv
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+
+
 # Global Variables
 TRAIN_DIR = 'train'
 IMAGE_SHAPE = (80,200,3)
@@ -36,6 +43,7 @@ def text_to_vector(text):
     # Transform the list of char into list of one-hot vectors
     return LABEL_ENCODER.transform(textVector)
 
+# Return a list of predictions in string format  
 def make_predictions(model, X_test):
     prediction_lists = LABEL_ENCODER.inverse_transform(model.predict_classes(X_test))
     prediction_strings = []    
@@ -46,8 +54,6 @@ def make_predictions(model, X_test):
 # Load image data from directory
 # Return image and label arrays
 def load_data():
-	# Avoid error from Heroku during importing opencv
-    import cv2
     images, labels = [], []
     for (dirpath, dirnames, filenames) in os.walk(TRAIN_DIR):
         # Read the .png files only
@@ -131,3 +137,6 @@ def train():
 				verbose=2,
 				shuffle=True,
 				callbacks=[tensorboard, modelcheckpoint])
+	
+	# Get test accuracy
+	model.evaluate(X_test, Y_test)

@@ -13,10 +13,13 @@ TRAIN_DIR = 'train'
 
 # Clean up
 def remove_output(file_dir):
-    for file in os.listdir(file_dir):
-        file_path = os.path.join(file_dir,file)
-        if os.path.isfile(file_path):
-            os.remove(file_path)
+    if os.path.isdir(file_dir):
+        for file in os.listdir(file_dir):
+            file_path = os.path.join(file_dir,file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    else:
+        os.mkdir(file_dir)
 
 # Read system dictionary
 # Words with length (4-6) are chosen to return a list of words
@@ -31,10 +34,7 @@ def read_dictionary():
             word_list.append(word)
     return word_list
 
-def save_captcha_image(image):
-    image.save(os.path.join(TRAIN_DIR, text + '.png'))
-    return
-
+# Return a captcha image object from text
 def gen_captcha_image(imageCaptcha, text):
     captcha = imageCaptcha.generate(text)
     captcha_image = Image.open(captcha)
@@ -45,7 +45,7 @@ def gen_captcha_images(words):
     imageCaptcha = ImageCaptcha(width=200, height=80)
     for word in words:
         captcha_image = gen_captcha_image(imageCaptcha, word)
-        save_captcha_image(captcha_image)
+		captcha_image.save(os.path.join(TRAIN_DIR, word + '.png'))
     return
 
 def main():

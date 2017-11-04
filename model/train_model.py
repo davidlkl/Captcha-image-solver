@@ -43,14 +43,14 @@ def text_to_vector(text):
     # Transform the list of char into list of one-hot vectors
     return LABEL_ENCODER.transform(textVector)
 
-# Return a list of predictions in string format  
+# Return a list of predictions in string format
 def make_predictions(model, X_test):
     prediction_lists = LABEL_ENCODER.inverse_transform(model.predict_classes(X_test))
-    prediction_strings = []    
+    prediction_strings = []
     for prediction in prediction_lists:
         prediction_strings.append(''.join(prediction))
     return prediction_strings
-        
+
 # Load image data from directory
 # Return image and label arrays
 def load_data():
@@ -61,9 +61,9 @@ def load_data():
         for filename in filenames:
             # Get the english word
             label = filename.split('.')[0]
-	    # Encode the string into one-hot vectors
+        # Encode the string into one-hot vectors
             labels.append(text_to_vector(label))
-	    # Read image
+        # Read image
             image = cv2.imread(os.path.join(TRAIN_DIR,filename))
             images.append(image)
 
@@ -98,45 +98,50 @@ def create_model(image_shape, max_caption_len, vocab_size):
     model.add(Dropout(0.4))
     model.add(RepeatVector(1))
     model.add(Seq2Seq(input_dim=256, input_length=1, hidden_dim=256,
-	      output_length=max_caption_len, output_dim=256, peek=True))
+          output_length=max_caption_len, output_dim=256, peek=True))
     model.add(TimeDistributed(Dense(vocab_size)))
     model.add(Activation('softmax'))
+    return model
+
+def compile_model(model):
     # sgd seems work well in this model (the val_loss decreases smoothly)
     sgd = SGD(lr=0.002, momentum=0.9, nesterov=True, decay=1e-6)
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
-    return model
+    return
 
 def train():
-	# Randomization
-	seed = 7
-	np.random.seed(seed)
+    # Randomization
+    seed = 7
+    np.random.seed(seed)
 
-	# Load data from directory
-	X, Y = load_data()
+    # Load data from directory
+    X, Y = load_data()
 
-	# train : val : test = 0.68 : 0.17 : 0.15
-	X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size=0.15, random_state=seed)
-	X_train, X_val, Y_train, Y_val = train_test_split(X_train,Y_train,test_size=0.2, random_state=seed)
+    # train : val : test = 0.68 : 0.17 : 0.15
+    X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size=0.15, random_state=seed)
+    X_train, X_val, Y_train, Y_val = train_test_split(X_train,Y_train,test_size=0.2, random_state=seed)
 
-	# Create the defined model
-	model = create_model(IMAGE_SHAPE, MAX_CHAR_NUM, NUM_CHAR_CLASS)
+    # Create the defined model
+    model = create_model(IMAGE_SHAPE, MAX_CHAR_NUM, NUM_CHAR_CLASS)
+    # Compile the model
+    compile_model(model)
 
-	# Callback for visualization of training progress
-	tensorboard =  TensorBoard(log_dir="./logs")
-	# Callback for saving the model with lowest validation loss
-	modelcheckpoint= ModelCheckpoint('weights.{epoch:02d}-{val_loss:.2f}.hdf5',
-					monitor='val_loss',
-					verbose=0,
-					save_best_only=True)
+    # Callback for visualization of training progress
+    tensorboard =  TensorBoard(log_dir="./logs")
+    # Callback for saving the model with lowest validation loss
+    modelcheckpoint= ModelCheckpoint('weights.{epoch:02d}-{val_loss:.2f}.hdf5',
+    monitor='val_loss',
+    verbose=0,
+    save_best_only=True)
 
-	# Fit the model with mini-batch
-	history = model.fit(X_train,Y_train,
-				batch_size=64,
-				validation_data=(X_val,Y_val),
-				epochs=400,
-				verbose=2,
-				shuffle=True,
-				callbacks=[tensorboard, modelcheckpoint])
-	
-	# Get test accuracy
-	model.evaluate(X_test, Y_test)
+    # Fit the model with mini-batch
+    history = model.fit(X_train,Y_train,
+    batch_size=64,
+    validation_data=(X_val,Y_val),
+    epochs=400,
+    verbose=2,
+    shuffle=True,
+    callbacks=[tensorboard, modelcheckpoint])
+
+    # Get test accuracy
+    model.evaluate(X_test, Y_test)

@@ -11,7 +11,7 @@ Ubuntu 16.04, Python 3.5.2
 3. Local Server Setup
 
 Flowchart:
-<img></img>
+![flowchart](/model/flowchart.jpg)
 
 ### Data Preparation
 A library named Captcha is used for generating captcha from given text. <br>
@@ -29,7 +29,7 @@ The chaptcha image dataset is split into 3 parts (train, validation, testing) in
 
 ##### Model Architecture:
 I started with the one mentioned in this article (http://www.jianshu.com/p/25655870b458) and made some changes. <br>
-Flowchart: <br>
+![Model_Arc](/model/archi.jpg)
 
 After 300 epochs of training, the model with lowest validation loss (0.12) is chosen. It has ~ 98% accuracy in identifying individual characters, roughly 0.98^5=90.4% accuracy in identifying the whole captcha image.<br>
 
@@ -61,7 +61,8 @@ A local server will be run on localhost:5000.
 ### Heroku - a free web hosting website
 This repository is pushed to Heroku, a free web hosting website. <br>
 Link: https://davidlkl-captcha-solver.herokuapp.com/<br>
-Please note that the server may be down for serveral hours per day becuase of the free plan.
+Please note that the server may be down for serveral hours per day becuase of the free plan and it takes some time for the server to reboot from sleep mode.
+
 ##### Relevant files:
 Some configuaration files are needed to setup Heroku. They are Procfile, nltk.txt, requirements.txt and runtime.txt.
 

@@ -59,6 +59,7 @@ The front-end is a simple webpage with a single button to generate random captch
 A local server will be run on localhost:5000.
 
 ### Heroku - a free web hosting website
+### *** Not working now (For reference only) ***
 This repository is pushed to Heroku, a free web hosting website. <br>
 Link: https://davidlkl-captcha-solver.herokuapp.com/<br>
 Please note that the server may be down for serveral hours per day becuase of the free plan and it takes some time for the server to reboot from sleep mode.
